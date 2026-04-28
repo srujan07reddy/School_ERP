@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView, Dimensions, Activi
 import { useStore } from '../store/useStore';
 import { MOCK_USERS } from '../utils/mockData';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Mail, Lock, Phone, ShieldCheck, ChevronRight } from 'lucide-react-native';
+import { Mail, Lock, Phone, ShieldCheck, ChevronRight, Eye, EyeOff } from 'lucide-react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -16,6 +16,7 @@ export const LoginScreen = () => {
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [showOtp, setShowOtp] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
     setLoading(true);
@@ -124,11 +125,18 @@ export const LoginScreen = () => {
                     <TextInput
                       placeholder="••••••••"
                       placeholderTextColor="#475569"
-                      secureTextEntry
+                      secureTextEntry={!showPassword}
                       className="flex-1 ml-3 text-white font-medium"
                       value={password}
                       onChangeText={setPassword}
                     />
+                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                      {showPassword ? (
+                        <EyeOff color="#64748b" size={20} />
+                      ) : (
+                        <Eye color="#64748b" size={20} />
+                      )}
+                    </TouchableOpacity>
                   </View>
                 </View>
               </>

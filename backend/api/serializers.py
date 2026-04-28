@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Student, Attendance, Transaction, BusRoute, Message, Assignment, Note, LeaveRequest, Substitution, TimetableEntry
+from .models import User, Student, Attendance, Transaction, BusRoute, Message, Assignment, Note, LeaveRequest, Substitution, TimetableEntry, Subject, StaffProfile, StaffAssignment
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -55,4 +55,21 @@ class SubstitutionSerializer(serializers.ModelSerializer):
 class TimetableEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = TimetableEntry
+        fields = '__all__'
+
+class SubjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subject
+        fields = '__all__'
+
+class StaffProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    subjects = SubjectSerializer(many=True, read_only=True)
+    class Meta:
+        model = StaffProfile
+        fields = '__all__'
+
+class StaffAssignmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StaffAssignment
         fields = '__all__'

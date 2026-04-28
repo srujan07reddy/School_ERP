@@ -85,3 +85,29 @@ class Substitution(models.Model):
     substitute_staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name='covering_subs')
     date = models.DateField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
+
+class Subject(models.Model):
+    name = models.CharField(max_length=100)
+    code = models.CharField(max_length=20, unique=True)
+    hours_per_week = models.IntegerField(default=5)
+    grade_level = models.CharField(max_length=20, default="General")
+
+    def __str__(self):
+        return f"{self.name} ({self.grade_level})"
+
+class StaffProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='staff_profile')
+    subjects = models.ManyToManyField(Subject, related_name='teachers')
+    max_hours_per_day = models.IntegerField(default=6)
+    assigned_sections = models.JSONField(default=list) # e.g. ["10th-A", "10th-B"]
+
+    def __str__(self):
+        return f"Staff: {self.user.username}"
+
+class StaffAssignment(models.Model):
+    staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name='manual_assignments')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    class_section = models.CharField(max_length=50) # e.g. "10th-A"
+
+    def __str__(self):
+        return f"{self.staff.username} -> {self.subject.name} in {self.class_section}"
