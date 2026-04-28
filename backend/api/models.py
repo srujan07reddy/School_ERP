@@ -33,14 +33,55 @@ class Transaction(models.Model):
 class BusRoute(models.Model):
     bus_number = models.CharField(max_length=20)
     driver_name = models.CharField(max_length=100)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
+    driver_phone = models.CharField(max_length=20, blank=True, null=True)
+    route_name = models.CharField(max_length=200, blank=True, null=True)
+    current_stop = models.CharField(max_length=100, blank=True, null=True)
+    status = models.CharField(max_length=20, default='On Time') # On Time, Delayed
+    student_count = models.IntegerField(default=0)
+    latitude = models.FloatField(default=0.0)
+    longitude = models.FloatField(default=0.0)
     updated_at = models.DateTimeField(auto_now=True)
+
+class TimetableEntry(models.Model):
+    day = models.CharField(max_length=20) # Monday, Tuesday...
+    slot = models.CharField(max_length=20) # 08:00 AM...
+    subject = models.CharField(max_length=100)
+    teacher_name = models.CharField(max_length=100)
+    class_section = models.CharField(max_length=50) # e.g. 10th-A
+    room_number = models.CharField(max_length=20)
+    is_optimized = models.BooleanField(default=True)
 
 class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages')
-    content = models.TextField()
+    text = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    is_encrypted = models.BooleanField(default=True)
-    time_gated_until = models.DateTimeField(null=True, blank=True)
+
+class Assignment(models.Model):
+    title = models.CharField(max_length=200)
+    deadline = models.DateField()
+    total_marks = models.IntegerField(default=100)
+    submissions = models.IntegerField(default=0)
+    class_name = models.CharField(max_length=50) # e.g. Primary-A
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class Note(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    class_name = models.CharField(max_length=50)
+    sender_name = models.CharField(max_length=100)
+    created_at = models.DateField(auto_now_add=True)
+
+class LeaveRequest(models.Model):
+    STATUS_CHOICES = (('Pending', 'Pending'), ('Approved', 'Approved'), ('Rejected', 'Rejected'))
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    receiver_role = models.CharField(max_length=50) # Admin or Coordinator
+    reason = models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+    date = models.CharField(max_length=50)
+
+class Substitution(models.Model):
+    absent_staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name='absent_subs')
+    substitute_staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name='covering_subs')
+    date = models.DateField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)

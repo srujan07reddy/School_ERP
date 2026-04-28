@@ -17,6 +17,9 @@ export interface User {
     department: string;
     experience: number;
     subjects: string[];
+    assignedClass?: string;
+    isFree: boolean;
+    freeHours: string[];
   };
 }
 
@@ -52,8 +55,68 @@ export interface BusRoute {
   }>;
 }
 
+export interface Asset {
+  id: string;
+  name: string;
+  category: 'Lab' | 'Furniture' | 'IT' | 'Infrastructure';
+  lastMaintenance: string;
+  nextMaintenance: string;
+  condition: 'Good' | 'Needs Repair' | 'Critical';
+}
+
+export interface PayrollRecord {
+  id: string;
+  staffId: string;
+  staffName: string;
+  amount: number;
+  month: string;
+  status: 'Draft' | 'Pending Approval' | 'Disbursed';
+}
+
+export interface AuditLog {
+  id: string;
+  timestamp: string;
+  actor: string;
+  action: string;
+  details: string;
+  severity: 'Info' | 'Warning' | 'Critical';
+}
+
+export interface Message {
+  id: string;
+  senderId: string;
+  receiverId: string;
+  text: string;
+  timestamp: string;
+  isEncrypted?: boolean;
+  expiresAt?: string;
+}
+
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  date: string;
+  type: 'Holiday' | 'Event' | 'Meeting';
+  description: string;
+  visibility: 'All' | 'Staff' | 'Admins';
+}
+
+export interface Survey {
+  id: string;
+  title: string;
+  description: string;
+  role: 'StudentParent' | 'Staff' | 'All';
+  options: string[];
+  results: Record<string, number>;
+  createdBy: string;
+  createdAt: string;
+  isActive: boolean;
+}
+
 export interface LiveStats {
   staffPresent: number;
   studentsPresent: number;
   liveBuses: number;
+  revenue?: number;
+  expenses?: number;
 }

@@ -21,12 +21,12 @@ export const MOCK_USERS: User[] = [
   { 
     id: '4', name: 'Dr. Sarah Wilson', email: 'staff@school.com', role: 'Staff', 
     isCoordinator: false, phone: '9876543210',
-    staffData: { department: 'Mathematics', experience: 12, subjects: ['Algebra', 'Calculus'] }
+    staffData: { department: 'Mathematics', experience: 12, subjects: ['Algebra', 'Calculus'], assignedClass: 'Primary-A', isFree: true, freeHours: ['09:00 AM', '11:00 AM'] }
   },
   { 
     id: '5', name: 'Prof. Robert Fox', email: 'coord@school.com', role: 'Staff', 
     isCoordinator: true, phone: '9876543211',
-    staffData: { department: 'Physics', experience: 15, subjects: ['Optics', 'Quantum'] }
+    staffData: { department: 'Physics', experience: 15, subjects: ['Optics', 'Quantum'], assignedClass: 'Secondary-B', isFree: false, freeHours: ['01:00 PM', '03:00 PM'] }
   },
   { 
     id: '6', name: 'Alex Johnson', email: 'parent@school.com', role: 'StudentParent', 
